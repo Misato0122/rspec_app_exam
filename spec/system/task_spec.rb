@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Task', type: :system do
   let(:project) { create(:project) }
-  let(:task) { create(:task, project_id: project.id)}
+  let!(:task) { create(:task, project_id: project.id)}
   let(:task_done) { create(:task, :done, project_id: project.id) }
 
   describe 'Task一覧' do
@@ -42,8 +42,8 @@ RSpec.describe 'Task', type: :system do
         fill_in 'Title', with: 'test'
         click_button 'Create Task'
         expect(page).to have_content('Task was successfully created.')
-        expect(Task.count).to eq 1
-        expect(current_path).to eq '/projects/1/tasks/1'
+        expect(Task.count).to eq 2
+        expect(current_path).to eq '/projects/1/tasks/2'
       end
     end
   end
@@ -108,7 +108,7 @@ RSpec.describe 'Task', type: :system do
       # FIXME: テストが失敗するので修正してください
       it 'Taskが削除されること' do
         # project = FactoryBot.create(:project)
-        task = FactoryBot.create(:task, project_id: project.id)
+        # task = FactoryBot.create(:task, project_id: project.id)
         visit project_tasks_path(project)
         click_link 'Destroy'
         page.driver.browser.switch_to.alert.accept
